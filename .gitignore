@@ -1,0 +1,32 @@
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Editor
+.vscode/
+.idea/
+*.code-workspace
+
+# Backup files
+*.backup
+*.backup-*
+
+# Temporary files
+*.tmp
+.tmp/
+tmp/
+
+# Local configuration (optional - uncomment to track personal settings)
+# Note: .zshrc.local contains your personal configuration
+# You may want to version control it, so it's not ignored by default
+# Add the line below to your personal .gitignore if you want to exclude it:
+# .zshrc.local
+
+# Cache
+.cache/
+*.cache
+
+# Logs
+*.log

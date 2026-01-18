@@ -50,7 +50,7 @@ disabled = false
 format = '[$symbol](bold white) '
 
 [os.symbols]
-Macos = ''
+macOS = ''
 Linux = ''
 Windows = ''
 

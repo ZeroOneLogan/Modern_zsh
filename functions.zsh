@@ -303,10 +303,12 @@ port-kill() {
     echo "Found processes on port $1:"
     lsof -i :"$1"
     echo ""
-    read -q "REPLY?Kill these processes? (y/n) "
+    
+    local kill_confirm
+    read -q "kill_confirm?Kill these processes? (y/n) "
     echo ""
     
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
+    if [[ $kill_confirm =~ ^[Yy]$ ]]; then
         # Try graceful shutdown first
         echo "$pids" | xargs kill
         sleep 2
@@ -560,10 +562,12 @@ emptytrash() {
     fi
     
     echo "Found $item_count item(s) in trash"
-    read -q "REPLY?Empty trash? (y/n) "
+    
+    local empty_confirm
+    read -q "empty_confirm?Empty trash? (y/n) "
     echo ""
     
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
+    if [[ $empty_confirm =~ ^[Yy]$ ]]; then
         # Safer approach using find with -delete
         find "$trash_dir" -mindepth 1 -delete
         echo "Trash emptied successfully!"

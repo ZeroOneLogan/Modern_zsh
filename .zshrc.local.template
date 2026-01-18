@@ -1,0 +1,160 @@
+# ============================================================================
+# Personal Zsh Configuration Template
+# ============================================================================
+# Copy this file to ~/.zshrc.local and customize it with your personal settings
+# This file will be automatically loaded by .zshrc and won't be overwritten
+# during updates.
+
+# ============================================================================
+# Personal Environment Variables
+# ============================================================================
+
+# Editor (uncomment and customize)
+# export EDITOR='vim'
+# export VISUAL='code'
+
+# Default user (suppress user@hostname in prompt)
+# export DEFAULT_USER="yourusername"
+
+# Custom PATH additions
+# export PATH="$HOME/custom/bin:$PATH"
+
+# ============================================================================
+# Personal Aliases
+# ============================================================================
+
+# Add your personal aliases here
+# Example:
+# alias work='cd ~/Projects/work'
+# alias personal='cd ~/Projects/personal'
+# alias deploy='./scripts/deploy.sh'
+
+# ============================================================================
+# Personal Functions
+# ============================================================================
+
+# Add your personal functions here
+# Example:
+# project() {
+#     cd ~/Projects/"$1"
+# }
+
+# ============================================================================
+# Tool Configurations
+# ============================================================================
+
+# FZF custom configuration
+# export FZF_DEFAULT_OPTS="--height 50% --border"
+
+# Starship custom prompt
+# export STARSHIP_CONFIG=~/.config/starship-custom.toml
+
+# ============================================================================
+# Language-Specific Settings
+# ============================================================================
+
+# Python
+# export PYTHONPATH="$HOME/python/lib:$PYTHONPATH"
+
+# Node.js
+# export NODE_ENV="development"
+
+# Go
+# export GOPATH="$HOME/go"
+# export PATH="$GOPATH/bin:$PATH"
+
+# Rust
+# export RUST_BACKTRACE=1
+
+# ============================================================================
+# Project-Specific Settings
+# ============================================================================
+
+# Add any project-specific environment variables or configurations
+# Example:
+# export PROJECT_API_KEY="your-key-here"
+# export DATABASE_URL="postgresql://localhost/mydb"
+
+# ============================================================================
+# Key Bindings Customization
+# ============================================================================
+
+# Add custom key bindings
+# Example:
+# bindkey '^[[1;5C' forward-word    # Ctrl+Right
+# bindkey '^[[1;5D' backward-word   # Ctrl+Left
+
+# ============================================================================
+# Completion Customization
+# ============================================================================
+
+# Add custom completion rules
+# Example:
+# compdef _git g=git
+
+# ============================================================================
+# Hooks
+# ============================================================================
+
+# Add custom hooks
+# Example:
+# precmd() {
+#     # Runs before each prompt
+# }
+#
+# preexec() {
+#     # Runs before each command
+# }
+
+# ============================================================================
+# Conditional Configurations
+# ============================================================================
+
+# Work computer specific settings
+# if [[ $(hostname) == "work-macbook" ]]; then
+#     export GIT_AUTHOR_EMAIL="work@example.com"
+# fi
+
+# Home computer specific settings
+# if [[ $(hostname) == "personal-macbook" ]]; then
+#     export GIT_AUTHOR_EMAIL="personal@example.com"
+# fi
+
+# ============================================================================
+# Integration with Other Tools
+# ============================================================================
+
+# SSH Agent
+# if [ -z "$SSH_AUTH_SOCK" ] ; then
+#     eval `ssh-agent -s`
+#     ssh-add
+# fi
+
+# GPG Agent
+# export GPG_TTY=$(tty)
+
+# ============================================================================
+# Additional Plugin Loading
+# ============================================================================
+
+# Load additional zinit plugins
+# zinit light username/repo-name
+
+# ============================================================================
+# Performance Optimizations
+# ============================================================================
+
+# Disable features you don't need
+# Example:
+# unsetopt CORRECT        # Disable command correction
+# unsetopt CORRECT_ALL    # Disable argument correction
+
+# ============================================================================
+# Notes
+# ============================================================================
+
+# Remember:
+# - This file is sourced after the main .zshrc
+# - You can override any settings from the main config
+# - Keep sensitive data (API keys, passwords) in environment variables
+# - Use version control for your .zshrc.local (but exclude sensitive data)

@@ -1,0 +1,30 @@
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Editor
+.vscode/
+.idea/
+*.code-workspace
+
+# Backup files
+*.backup
+*.backup-*
+
+# Temporary files
+*.tmp
+.tmp/
+tmp/
+
+# Local configuration
+.zshrc.local
+*.local
+
+# Cache
+.cache/
+*.cache
+
+# Logs
+*.log

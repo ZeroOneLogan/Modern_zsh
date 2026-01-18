@@ -1,0 +1,359 @@
+# ============================================================================
+# Starship Prompt Configuration for Modern Zsh
+# ============================================================================
+# Place this file at: ~/.config/starship.toml
+# Install Starship: curl -sS https://starship.rs/install.sh | sh
+
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Timeout for commands (milliseconds)
+command_timeout = 1000
+
+# ============================================================================
+# Format
+# ============================================================================
+format = """
+[╭─](bold blue)$os\
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_status\
+$git_state\
+$docker_context\
+$nodejs\
+$python\
+$rust\
+$golang\
+$java\
+$kotlin\
+$ruby\
+$php\
+$terraform\
+$kubernetes\
+$aws\
+$gcloud\
+$azure
+[╰─](bold blue)$character"""
+
+# Right prompt
+right_format = """$cmd_duration\
+$time"""
+
+# ============================================================================
+# Core Modules
+# ============================================================================
+
+[os]
+disabled = false
+format = '[$symbol](bold white) '
+
+[os.symbols]
+Macos = ''
+Linux = ''
+Windows = ''
+
+[username]
+show_always = false
+style_user = 'bold green'
+style_root = 'bold red'
+format = '[$user]($style) '
+
+[hostname]
+ssh_only = true
+format = '[@$hostname](bold yellow) '
+disabled = false
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+format = '[$path]($style)[$read_only]($read_only_style) '
+style = 'bold cyan'
+read_only = ' '
+read_only_style = 'red'
+
+[directory.substitutions]
+'Documents' = ' '
+'Downloads' = ' '
+'Music' = ' '
+'Pictures' = ' '
+'Developer' = ' '
+'Projects' = ' '
+
+[character]
+success_symbol = '[❯](bold green)'
+error_symbol = '[❯](bold red)'
+vicmd_symbol = '[❮](bold green)'
+
+[cmd_duration]
+min_time = 500
+format = '[ $duration]($style)'
+style = 'yellow'
+
+[time]
+disabled = false
+format = '[$time]($style) '
+style = 'bold dimmed white'
+time_format = '%T'
+
+# ============================================================================
+# Git Modules
+# ============================================================================
+
+[git_branch]
+symbol = ' '
+format = '[$symbol$branch(:$remote_branch)]($style) '
+style = 'bold purple'
+
+[git_status]
+format = '([$all_status$ahead_behind]($style) )'
+style = 'bold red'
+conflicted = '🏳 '
+up_to_date = ''
+untracked = ' '
+ahead = '⇡${count} '
+diverged = '⇕⇡${ahead_count}⇣${behind_count} '
+behind = '⇣${count} '
+stashed = ' '
+modified = ' '
+staged = '[++\($count\)](green) '
+renamed = '襁 '
+deleted = ' '
+
+[git_state]
+format = '[\($state( $progress_current of $progress_total)\)]($style) '
+style = 'bright-black'
+
+[git_commit]
+commit_hash_length = 7
+tag_symbol = '🏷 '
+
+# ============================================================================
+# Programming Languages
+# ============================================================================
+
+[nodejs]
+symbol = ' '
+format = '[$symbol($version )]($style)'
+style = 'bold green'
+detect_extensions = ['js', 'mjs', 'cjs', 'ts']
+
+[python]
+symbol = ' '
+format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+style = 'bold yellow'
+pyenv_version_name = false
+detect_extensions = ['py']
+
+[rust]
+symbol = ' '
+format = '[$symbol($version )]($style)'
+style = 'bold red'
+
+[golang]
+symbol = ' '
+format = '[$symbol($version )]($style)'
+style = 'bold cyan'
+
+[java]
+symbol = ' '
+format = '[$symbol($version )]($style)'
+style = 'bold red'
+
+[kotlin]
+symbol = '🅺 '
+format = '[$symbol($version )]($style)'
+style = 'bold blue'
+
+[ruby]
+symbol = ' '
+format = '[$symbol($version )]($style)'
+style = 'bold red'
+
+[php]
+symbol = ' '
+format = '[$symbol($version )]($style)'
+style = 'bold purple'
+
+[lua]
+symbol = ' '
+format = '[$symbol($version )]($style)'
+style = 'bold blue'
+
+[perl]
+symbol = ' '
+format = '[$symbol($version )]($style)'
+style = 'bold blue'
+
+[elixir]
+symbol = ' '
+format = '[$symbol($version \(OTP $otp_version\) )]($style)'
+style = 'bold purple'
+
+[nim]
+symbol = ' '
+format = '[$symbol($version )]($style)'
+style = 'bold yellow'
+
+[swift]
+symbol = 'ﯣ '
+format = '[$symbol($version )]($style)'
+style = 'bold orange'
+
+# ============================================================================
+# Package Managers
+# ============================================================================
+
+[package]
+symbol = ' '
+format = '[$symbol$version]($style) '
+style = 'bold 208'
+display_private = false
+
+[conda]
+symbol = ' '
+format = '[$symbol$environment]($style) '
+style = 'bold green'
+
+# ============================================================================
+# Cloud & Infrastructure
+# ============================================================================
+
+[docker_context]
+symbol = ' '
+format = '[$symbol$context]($style) '
+style = 'bold blue'
+only_with_files = true
+
+[kubernetes]
+symbol = '☸ '
+format = '[$symbol$context( \($namespace\))]($style) '
+style = 'bold blue'
+disabled = false
+
+[terraform]
+symbol = '💠 '
+format = '[$symbol$workspace]($style) '
+style = 'bold purple'
+
+[aws]
+symbol = ' '
+format = '[$symbol($profile )(\($region\) )(\[$duration\] )]($style)'
+style = 'bold yellow'
+
+[gcloud]
+symbol = '️☁️ '
+format = '[$symbol$account(@$domain)(\($region\))]($style) '
+style = 'bold blue'
+
+[azure]
+symbol = '️☁️ '
+format = '[$symbol($subscription)]($style) '
+style = 'bold blue'
+
+# ============================================================================
+# Version Control (Other)
+# ============================================================================
+
+[hg_branch]
+symbol = ' '
+format = '[$symbol$branch]($style) '
+style = 'bold purple'
+
+# ============================================================================
+# Tools
+# ============================================================================
+
+[cmake]
+symbol = '△ '
+format = '[$symbol($version )]($style)'
+style = 'bold blue'
+
+[dart]
+symbol = ' '
+format = '[$symbol($version )]($style)'
+style = 'bold blue'
+
+[helm]
+symbol = '⎈ '
+format = '[$symbol($version )]($style)'
+style = 'bold white'
+
+[vagrant]
+symbol = '⍱ '
+format = '[$symbol($version )]($style)'
+style = 'bold cyan'
+
+# ============================================================================
+# Environment Variables
+# ============================================================================
+
+[env_var.SHELL]
+variable = 'SHELL'
+default = 'unknown shell'
+format = '[$env_value]($style) '
+style = 'dimmed white'
+disabled = true
+
+# ============================================================================
+# Battery
+# ============================================================================
+
+[battery]
+full_symbol = ' '
+charging_symbol = ' '
+discharging_symbol = ' '
+unknown_symbol = ' '
+empty_symbol = ' '
+disabled = false
+
+[[battery.display]]
+threshold = 10
+style = 'bold red'
+
+[[battery.display]]
+threshold = 30
+style = 'bold yellow'
+
+[[battery.display]]
+threshold = 100
+style = 'bold green'
+
+# ============================================================================
+# Memory Usage
+# ============================================================================
+
+[memory_usage]
+disabled = true
+threshold = 75
+format = 'via $symbol[$ram( | $swap)]($style) '
+symbol = ' '
+style = 'bold dimmed white'
+
+# ============================================================================
+# Jobs
+# ============================================================================
+
+[jobs]
+symbol = ' '
+number_threshold = 1
+format = '[$symbol$number]($style) '
+style = 'bold blue'
+
+# ============================================================================
+# Status
+# ============================================================================
+
+[status]
+disabled = false
+format = '[\[$symbol$status\]]($style) '
+symbol = '✖ '
+style = 'bold red'
+
+# ============================================================================
+# Line Break
+# ============================================================================
+
+[line_break]
+disabled = false

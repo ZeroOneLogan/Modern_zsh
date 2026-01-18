@@ -114,20 +114,27 @@ fdir() {
 # Text Processing & Search
 # ============================================================================
 
-# Find and replace in files (requires ripgrep)
+# Find and replace in files
+# Note: For complex patterns or special characters, use sed/ripgrep directly
 findreplace() {
     if [ $# -lt 2 ]; then
         echo "Usage: findreplace <find> <replace> [path]"
+        echo "Warning: Simple patterns only. Special regex chars will be interpreted."
+        echo "For complex replacements, use sed or rg directly."
         return 1
     fi
     local find="$1"
     local replace="$2"
     local path="${3:-.}"
     
+    # Use perl for safer replacement with special characters
     if command -v rg &> /dev/null; then
-        rg "$find" "$path" -l | xargs sed -i '' "s/$find/$replace/g"
+        rg "$find" "$path" -l | xargs perl -pi -e "s/\Q$find\E/$replace/g"
+    elif command -v perl &> /dev/null; then
+        grep -rl "$find" "$path" 2>/dev/null | xargs perl -pi -e "s/\Q$find\E/$replace/g"
     else
-        grep -rl "$find" "$path" | xargs sed -i '' "s/$find/$replace/g"
+        echo "Warning: perl not found, using sed (may fail with special characters)"
+        grep -rl "$find" "$path" 2>/dev/null | xargs sed -i '' "s/$find/$replace/g"
     fi
 }
 
@@ -163,7 +170,8 @@ gcl() {
         echo "Usage: gcl <repository-url> [directory]"
         return 1
     fi
-    git clone "$1" "$2" && cd "$(basename "$1" .git)" || return
+    local target_dir="${2:-$(basename "$1" .git)}"
+    git clone "$1" "$target_dir" && cd "$target_dir" || return
 }
 
 # Git commit with conventional commit format

@@ -18,7 +18,8 @@ alias nt='npm test'
 alias nb='npm run build'
 alias nrd='npm run dev'
 alias nc='npm run clean'
-alias npx='npx --no-install'
+# Use 'npxni' for npx with --no-install, regular 'npx' works normally
+alias npxni='npx --no-install'
 
 # Yarn
 alias y='yarn'

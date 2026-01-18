@@ -243,12 +243,12 @@ format = '[$symbol($profile )(\($region\) )(\[$duration\] )]($style)'
 style = 'bold yellow'
 
 [gcloud]
-symbol = '️☁️ '
+symbol = '☁️  '
 format = '[$symbol$account(@$domain)(\($region\))]($style) '
 style = 'bold blue'
 
 [azure]
-symbol = '️☁️ '
+symbol = '☁️  '
 format = '[$symbol($subscription)]($style) '
 style = 'bold blue'
 

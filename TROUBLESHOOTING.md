@@ -400,9 +400,9 @@ zsh -f -c 'source ~/.zshrc'
 
 If all else fails:
 ```bash
-# Restore backup
+# Restore backup (find the most recent backup directory first)
 mv ~/.zshrc ~/.zshrc.broken
-mv ~/.zsh_backup_*/. zshrc ~/.zshrc
+cp $(ls -td ~/.zsh_backup_* | head -1)/.zshrc ~/.zshrc
 
 # Or reinstall
 mv ~/.zshrc ~/.zshrc.broken

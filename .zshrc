@@ -247,14 +247,13 @@ if command -v rg &> /dev/null; then
     alias grep='rg'
 fi
 
-if command -v fd &> /dev/null; then
-    alias find='fd'
-fi
+# Note: fd is not aliased to 'find' since they have different syntax
+# Use fd directly for better performance: fd -t f -H ".DS_Store"
 
 # macOS specific aliases
 alias showfiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder'
 alias hidefiles='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder'
-alias cleanup='find . -type f -name "*.DS_Store" -ls -delete'
+alias cleanup='command find . -type f -name "*.DS_Store" -ls -delete'
 alias flushdns='sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder'
 
 # Docker aliases

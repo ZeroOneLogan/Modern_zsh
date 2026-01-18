@@ -90,16 +90,24 @@ ff() {
         echo "Usage: ff <filename>"
         return 1
     fi
-    find . -type f -iname "*$1*"
+    if command -v fd &> /dev/null; then
+        fd --type f --hidden --follow --exclude .git "$1"
+    else
+        find . -type f -iname "*$1*"
+    fi
 }
 
 # Find directories by name
-fd() {
+fdir() {
     if [ $# -eq 0 ]; then
-        echo "Usage: fd <dirname>"
+        echo "Usage: fdir <dirname>"
         return 1
     fi
-    find . -type d -iname "*$1*"
+    if command -v fd &> /dev/null; then
+        fd --type d --hidden --follow --exclude .git "$1"
+    else
+        find . -type d -iname "*$1*"
+    fi
 }
 
 # ============================================================================

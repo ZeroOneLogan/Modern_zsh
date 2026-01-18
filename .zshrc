@@ -145,7 +145,8 @@ zinit light jeffreytse/zsh-vi-mode
 autoload -Uz compinit
 
 # Initialize completion system with cache (faster startup)
-if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
+# Check if compdump is older than 24 hours
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
     compinit
 else
     compinit -C
@@ -319,18 +320,6 @@ extract() {
     else
         echo "'$1' is not a valid file"
     fi
-}
-
-# Find and replace in files
-findreplace() {
-    if [ $# -lt 2 ]; then
-        echo "Usage: findreplace <find> <replace> [path]"
-        return 1
-    fi
-    local find="$1"
-    local replace="$2"
-    local path="${3:-.}"
-    rg "$find" "$path" -l | xargs sed -i '' "s/$find/$replace/g"
 }
 
 # Quick note taking

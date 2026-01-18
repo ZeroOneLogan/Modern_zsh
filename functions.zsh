@@ -128,13 +128,15 @@ findreplace() {
     local path="${3:-.}"
     
     # Use perl for safer replacement with special characters
-    if command -v rg &> /dev/null; then
-        rg "$find" "$path" -l | xargs perl -pi -e "s/\Q$find\E/$replace/g"
+    # Using -print0 and xargs -0 for safe handling of filenames with spaces
+    if command -v rg &> /dev/null && command -v perl &> /dev/null; then
+        rg "$find" "$path" -l0 | xargs -0 perl -pi -e "s/\Q$find\E/$replace/g"
     elif command -v perl &> /dev/null; then
-        grep -rl "$find" "$path" 2>/dev/null | xargs perl -pi -e "s/\Q$find\E/$replace/g"
+        grep -rlZ "$find" "$path" 2>/dev/null | xargs -0 perl -pi -e "s/\Q$find\E/$replace/g"
     else
-        echo "Warning: perl not found, using sed (may fail with special characters)"
-        grep -rl "$find" "$path" 2>/dev/null | xargs sed -i '' "s/$find/$replace/g"
+        echo "Warning: perl not found. For safety with filenames containing spaces,"
+        echo "this function requires perl. Install it with: brew install perl"
+        return 1
     fi
 }
 
@@ -285,7 +287,40 @@ port-kill() {
         echo "Usage: port-kill <port>"
         return 1
     fi
-    lsof -ti :"$1" | xargs kill -9
+    
+    # Validate port number
+    if ! [[ "$1" =~ ^[0-9]+$ ]] || [ "$1" -lt 1 ] || [ "$1" -gt 65535 ]; then
+        echo "Error: Invalid port number. Must be between 1 and 65535."
+        return 1
+    fi
+    
+    local pids=$(lsof -ti :"$1" 2>/dev/null)
+    if [ -z "$pids" ]; then
+        echo "No process found listening on port $1"
+        return 1
+    fi
+    
+    echo "Found processes on port $1:"
+    lsof -i :"$1"
+    echo ""
+    read -q "REPLY?Kill these processes? (y/n) "
+    echo ""
+    
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        # Try graceful shutdown first
+        echo "$pids" | xargs kill
+        sleep 2
+        
+        # Force kill if still running
+        local remaining=$(lsof -ti :"$1" 2>/dev/null)
+        if [ -n "$remaining" ]; then
+            echo "Force killing remaining processes..."
+            echo "$remaining" | xargs kill -9
+        fi
+        echo "Processes killed successfully"
+    else
+        echo "Cancelled"
+    fi
 }
 
 # ============================================================================
@@ -510,9 +545,31 @@ hidehidden() {
 
 # Empty trash
 emptytrash() {
-    echo "Emptying trash..."
-    rm -rf ~/.Trash/*
-    echo "Trash emptied!"
+    local trash_dir="$HOME/.Trash"
+    
+    if [ ! -d "$trash_dir" ]; then
+        echo "Trash directory not found"
+        return 1
+    fi
+    
+    local item_count=$(find "$trash_dir" -mindepth 1 -maxdepth 1 | wc -l | tr -d ' ')
+    
+    if [ "$item_count" -eq 0 ]; then
+        echo "Trash is already empty"
+        return 0
+    fi
+    
+    echo "Found $item_count item(s) in trash"
+    read -q "REPLY?Empty trash? (y/n) "
+    echo ""
+    
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        # Safer approach using find with -delete
+        find "$trash_dir" -mindepth 1 -delete
+        echo "Trash emptied successfully!"
+    else
+        echo "Cancelled"
+    fi
 }
 
 # Spotlight search from terminal

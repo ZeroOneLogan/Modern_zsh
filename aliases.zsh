@@ -249,7 +249,8 @@ alias gwtr='git worktree remove'
 alias drun='docker run -it --rm'
 alias dst='docker stop'
 alias drm='docker rm'
-alias drma='docker rm $(docker ps -aq)'
+# Use 'docker container prune' for safe cleanup instead of drma
+alias drmall='docker container prune -f'  # Remove all stopped containers
 alias dstart='docker start'
 
 # Image management

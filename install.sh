@@ -169,8 +169,15 @@ install_config_files() {
 install_starship() {
     if ! command -v starship &> /dev/null; then
         print_step "Installing Starship prompt..."
-        curl -sS https://starship.rs/install.sh | sh -s -- -y
-        print_success "Starship installed successfully"
+        print_warning "About to download and execute Starship installation script from https://starship.rs"
+        read -p "Continue? (y/n) " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            curl -sS https://starship.rs/install.sh | sh -s -- -y
+            print_success "Starship installed successfully"
+        else
+            print_warning "Skipped Starship installation. Install manually later with: curl -sS https://starship.rs/install.sh | sh"
+        fi
     else
         print_success "Starship is already installed: $(starship --version)"
     fi

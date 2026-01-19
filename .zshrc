@@ -106,9 +106,13 @@ source "${ZINIT_HOME}/zinit.zsh"
 # ============================================================================
 # History
 setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format
+setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history
 setopt HIST_IGNORE_ALL_DUPS      # Delete an old recorded event if a new event is a duplicate
+setopt HIST_FIND_NO_DUPS         # Do not display a previously found event
 setopt HIST_IGNORE_SPACE         # Do not record an event starting with a space
+setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file
 setopt HIST_VERIFY               # Do not execute immediately upon history expansion
+setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks from each command line
 setopt SHARE_HISTORY             # Share history between all sessions
 
 # Directory Navigation
@@ -226,7 +230,7 @@ bindkey '^Z' ctrl-z-toggle
 # FZF (fuzzy finder)
 if has fzf; then
     # Set up fzf key bindings and fuzzy completion
-    if command fzf --zsh >/dev/null 2>&1; then
+    if fzf --zsh >/dev/null 2>&1; then
         eval "$(fzf --zsh)"
     elif [[ -r "$HOME/.fzf.zsh" ]]; then
         source "$HOME/.fzf.zsh"
@@ -260,6 +264,8 @@ if has fzf; then
 fi
 
 # Zoxide (smarter cd command)
+# Note: Using --cmd cd overrides the built-in cd command with zoxide's smart directory jumping
+# If you prefer to keep cd as-is and use 'z' command instead, remove the --cmd cd flag
 has zoxide && eval "$(zoxide init zsh --cmd cd)"
 
 # Direnv (load directory-specific environment variables)

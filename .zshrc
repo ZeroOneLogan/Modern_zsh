@@ -247,13 +247,13 @@ if has fzf; then
     fi
     
     # FZF configuration with Catppuccin Mocha theme
-    export FZF_DEFAULT_OPTS="--height=80% --layout=reverse --border=rounded \
---color=fg:#cdd6f4,bg:#1e1e2e,hl:#f38ba8 \
---color=fg+:#cdd6f4,bg+:#313244,hl+:#f9e2af \
---color=info:#89b4fa,prompt:#89dceb,pointer:#f5c2e7 \
---color=marker:#a6e3a1,spinner:#f5e0dc,header:#94e2d5 \
---preview-window=right:55%:wrap \
---bind='ctrl-/:toggle-preview'"
+    export FZF_DEFAULT_OPTS="--height=80% --layout=reverse --border=rounded\
+ --color=fg:#cdd6f4,bg:#1e1e2e,hl:#f38ba8\
+ --color=fg+:#cdd6f4,bg+:#313244,hl+:#f9e2af\
+ --color=info:#89b4fa,prompt:#89dceb,pointer:#f5c2e7\
+ --color=marker:#a6e3a1,spinner:#f5e0dc,header:#94e2d5\
+ --preview-window=right:55%:wrap\
+ --bind='ctrl-/:toggle-preview'"
     
     # Use fd for fzf if available
     if has fd; then

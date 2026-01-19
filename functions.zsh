@@ -138,8 +138,9 @@ findreplace() {
         rg "$find" "$path" -l
         echo ""
         
+        echo -n "Proceed with replacement? (y/n) "
         local confirm
-        read -q "confirm?Proceed with replacement? (y/n) "
+        read -q confirm
         echo ""
         
         if [[ $confirm == "y" ]]; then
@@ -318,8 +319,9 @@ port-kill() {
     lsof -i :"$1"
     echo ""
     
+    echo -n "Kill these processes? (y/n) "
     local kill_confirm
-    read -q "kill_confirm?Kill these processes? (y/n) "
+    read -q kill_confirm
     echo ""
     
     if [[ $kill_confirm == "y" ]]; then
@@ -581,14 +583,18 @@ emptytrash() {
     
     echo "Found $item_count item(s) in trash"
     
+    echo -n "Empty trash? (y/n) "
     local empty_confirm
-    read -q "empty_confirm?Empty trash? (y/n) "
+    read -q empty_confirm
     echo ""
     
     if [[ $empty_confirm == "y" ]]; then
-        # Validate trash_dir before deletion
-        if [[ -z "$trash_dir" ]] || [[ "$trash_dir" == "/" ]]; then
-            echo "Error: Invalid trash directory"
+        # Validate trash_dir before deletion - check for dangerous paths
+        if [[ -z "$trash_dir" ]] || [[ "$trash_dir" == "/" ]] || \
+           [[ "$trash_dir" == "/usr"* ]] || [[ "$trash_dir" == "/var"* ]] || \
+           [[ "$trash_dir" == "/etc"* ]] || [[ "$trash_dir" == "/bin"* ]] || \
+           [[ "$trash_dir" == "/sbin"* ]] || [[ "$trash_dir" == "/System"* ]]; then
+            echo "Error: Invalid or dangerous trash directory: $trash_dir"
             return 1
         fi
         # Use find for safer deletion

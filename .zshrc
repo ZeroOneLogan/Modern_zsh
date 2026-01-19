@@ -82,6 +82,13 @@ if has mise; then
   eval "$(mise activate zsh 2>/dev/null)" || true
 fi
 
+# Homebrew (macOS package manager) - must be early for proper PATH setup
+if [[ -d "/opt/homebrew" ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -d "/usr/local/Homebrew" ]]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+fi
+
 # ============================================================================
 # Zinit Plugin Manager Installation
 # ============================================================================
@@ -240,14 +247,13 @@ if has fzf; then
     fi
     
     # FZF configuration with Catppuccin Mocha theme
-    export FZF_DEFAULT_OPTS="
-    --height=80% --layout=reverse --border=rounded
-    --color=fg:#cdd6f4,bg:#1e1e2e,hl:#f38ba8
-    --color=fg+:#cdd6f4,bg+:#313244,hl+:#f9e2af
-    --color=info:#89b4fa,prompt:#89dceb,pointer:#f5c2e7
-    --color=marker:#a6e3a1,spinner:#f5e0dc,header:#94e2d5
-    --preview-window=right:55%:wrap
-    --bind='ctrl-/:toggle-preview'"
+    export FZF_DEFAULT_OPTS="--height=80% --layout=reverse --border=rounded\
+ --color=fg:#cdd6f4,bg:#1e1e2e,hl:#f38ba8\
+ --color=fg+:#cdd6f4,bg+:#313244,hl+:#f9e2af\
+ --color=info:#89b4fa,prompt:#89dceb,pointer:#f5c2e7\
+ --color=marker:#a6e3a1,spinner:#f5e0dc,header:#94e2d5\
+ --preview-window=right:55%:wrap\
+ --bind='ctrl-/:toggle-preview'"
     
     # Use fd for fzf if available
     if has fd; then
@@ -264,47 +270,23 @@ if has fzf; then
 fi
 
 # Zoxide (smarter cd command)
-# Note: Using --cmd cd overrides the built-in cd command with zoxide's smart directory jumping
-# If you prefer to keep cd as-is and use 'z' command instead, remove the --cmd cd flag
 has zoxide && eval "$(zoxide init zsh --cmd cd)"
 
 # Direnv (load directory-specific environment variables)
-if has direnv; then
-    eval "$(direnv hook zsh)"
-fi
+has direnv && eval "$(direnv hook zsh)"
 
 # Thefuck (correct previous console command)
-if has thefuck; then
-    eval "$(thefuck --alias)"
-fi
+has thefuck && eval "$(thefuck --alias)"
 
-# Node Version Manager (NVM)
+# Node Version Manager (NVM) - Lazy loaded for performance
 export NVM_DIR="$HOME/.nvm"
-if [ -s "$NVM_DIR/nvm.sh" ]; then
-    # Lazy load nvm to improve startup time
+if [[ -s "$NVM_DIR/nvm.sh" ]]; then
     nvm() {
         unset -f nvm
-        [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+        source "$NVM_DIR/nvm.sh"
         nvm "$@"
     }
 fi
-
-# Homebrew (macOS package manager)
-if [[ -d "/opt/homebrew" ]]; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-elif [[ -d "/usr/local/Homebrew" ]]; then
-    eval "$(/usr/local/bin/brew shellenv)"
-fi
-
-# ============================================================================
-# macOS Specific Configuration
-# ============================================================================
-
-# Set PATH for macOS
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
-
-# Add user bin directory
-export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 
 # GPG TTY for commit signing
 export GPG_TTY=$(tty)

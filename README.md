@@ -9,24 +9,22 @@ A blazing fast, feature-rich, and beautiful Zsh configuration optimized for macO
 ## ✨ Features
 
 ### 🎨 Beautiful & Fast Prompt
-- **[Starship](https://starship.rs/)** - A minimal, blazing-fast, and customizable prompt
-- Shows git status, programming language versions, execution time, and more
+- **[Starship](https://starship.rs/)** - Minimal, blazing-fast, and highly customizable prompt
+- Shows git status, programming language versions, and execution time
+- Optimized configuration for faster rendering
 - Nerd Font icons for a modern look
-- Highly customizable with `starship.toml`
 
 ### 🔌 Intelligent Plugin Management
 - **[Zinit](https://github.com/zdharma-continuum/zinit)** - Fast and flexible plugin manager
 - Turbo mode for async loading (sub-second startup time)
-- Smart plugin loading only when needed
+- Lazy loading for heavy tools (NVM, etc.)
 
 ### 🛠️ Essential Plugins
 - **Syntax highlighting** - Real-time command validation
 - **Auto-suggestions** - Fish-like autosuggestions based on history
 - **Tab completions** - Enhanced completion system
 - **History substring search** - Search through command history
-- **Fzf integration** - Fuzzy finding for files, history, and more
-- **Vi mode** - Vim keybindings for power users
-- **Auto-pair** - Automatically close brackets and quotes
+- **Fzf integration** - Fuzzy finding with Catppuccin Mocha theme
 
 ### 📦 Modern CLI Tools Integration
 - **[eza](https://github.com/eza-community/eza)** - Modern replacement for `ls`
@@ -38,20 +36,20 @@ A blazing fast, feature-rich, and beautiful Zsh configuration optimized for macO
 - **[thefuck](https://github.com/nvbn/thefuck)** - Corrects previous console command
 
 ### 🎯 Productivity Features
-- 200+ useful aliases for common tasks
-- Powerful custom functions for development
+- Carefully curated aliases for common tasks
+- Safe, well-tested custom functions for development
 - Git aliases and functions for efficient workflow
 - Docker and Kubernetes shortcuts
 - macOS-specific optimizations
-- Smart history management
+- Smart history management (50,000 entries)
 - Directory navigation helpers
 
 ### 🔧 Developer-Friendly
-- Support for multiple programming languages
-- Environment-aware (Node.js, Python, Go, Rust, etc.)
+- Core language support (Node.js, Python, Go, Rust, Java, Ruby)
+- Environment-aware with version detection
 - Project scaffolding functions
-- Quick development server setup
-- Port management utilities
+- Safe port management utilities
+- Modern find/replace with confirmation prompts
 
 ## 📋 Prerequisites
 
@@ -278,10 +276,10 @@ Install these tools for the best experience:
 
 ```bash
 # Essential tools
-brew install eza bat ripgrep fd fzf zoxide thefuck
+brew install eza bat ripgrep fd fzf zoxide starship
 
-# Additional tools
-brew install git-delta htop btop tree jq wget curl
+# Additional tools  
+brew install git-delta htop tree jq wget curl sd
 
 # Optional but useful
 brew install neovim tmux gh lazygit lazydocker
@@ -303,10 +301,11 @@ Then configure your terminal to use the font.
 ### Performance Tuning
 
 The configuration is optimized for speed with:
-- Turbo mode for async plugin loading
-- Lazy loading for heavy tools (NVM, etc.)
-- Completion caching
-- Minimal prompt rendering
+- Async plugin loading with Zinit turbo mode
+- Lazy loading for heavy tools (NVM)
+- Completion caching with daily refresh
+- Streamlined prompt with essential info only
+- Disabled cloud provider modules by default
 
 To measure startup time:
 ```bash

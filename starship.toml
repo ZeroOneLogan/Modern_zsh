@@ -11,7 +11,7 @@
 command_timeout = 1000
 
 # ============================================================================
-# Format
+# Format - Streamlined for performance
 # ============================================================================
 format = """
 [╭─](bold blue)$os\
@@ -20,26 +20,17 @@ $hostname\
 $directory\
 $git_branch\
 $git_status\
-$git_state\
 $docker_context\
 $nodejs\
 $python\
 $rust\
 $golang\
 $java\
-$kotlin\
-$ruby\
-$php\
-$terraform\
-$kubernetes\
-$aws\
-$gcloud\
-$azure
+$ruby
 [╰─](bold blue)$character"""
 
-# Right prompt
-right_format = """$cmd_duration\
-$time"""
+# Right prompt - minimal for performance
+right_format = "$cmd_duration$time"
 
 # ============================================================================
 # Core Modules
@@ -109,28 +100,24 @@ style = 'bold purple'
 [git_status]
 format = '([$all_status$ahead_behind]($style) )'
 style = 'bold red'
-conflicted = '🏳 '
+conflicted = '='
 up_to_date = ''
-untracked = ' '
-ahead = '⇡${count} '
-diverged = '⇕⇡${ahead_count}⇣${behind_count} '
-behind = '⇣${count} '
-stashed = ' '
-modified = ' '
-staged = '[++\($count\)](green) '
-renamed = '襁 '
-deleted = ' '
-
-[git_state]
-format = '[\($state( $progress_current of $progress_total)\)]($style) '
-style = 'bright-black'
+untracked = '?'
+ahead = '⇡${count}'
+diverged = '⇕⇡${ahead_count}⇣${behind_count}'
+behind = '⇣${count}'
+stashed = '$'
+modified = '!'
+staged = '+'
+renamed = '»'
+deleted = '✘'
 
 [git_commit]
 commit_hash_length = 7
-tag_symbol = '🏷 '
+tag_symbol = '🏷'
 
 # ============================================================================
-# Programming Languages
+# Programming Languages - Core languages only for performance
 # ============================================================================
 
 [nodejs]
@@ -171,36 +158,6 @@ symbol = ' '
 format = '[$symbol($version )]($style)'
 style = 'bold red'
 
-[php]
-symbol = ' '
-format = '[$symbol($version )]($style)'
-style = 'bold purple'
-
-[lua]
-symbol = ' '
-format = '[$symbol($version )]($style)'
-style = 'bold blue'
-
-[perl]
-symbol = ' '
-format = '[$symbol($version )]($style)'
-style = 'bold blue'
-
-[elixir]
-symbol = ' '
-format = '[$symbol($version \(OTP $otp_version\) )]($style)'
-style = 'bold purple'
-
-[nim]
-symbol = ' '
-format = '[$symbol($version )]($style)'
-style = 'bold yellow'
-
-[swift]
-symbol = 'ﯣ '
-format = '[$symbol($version )]($style)'
-style = 'bold orange'
-
 # ============================================================================
 # Package Managers
 # ============================================================================
@@ -217,7 +174,7 @@ format = '[$symbol$environment]($style) '
 style = 'bold green'
 
 # ============================================================================
-# Cloud & Infrastructure
+# Cloud & Infrastructure - Disabled by default for performance
 # ============================================================================
 
 [docker_context]
@@ -227,112 +184,25 @@ style = 'bold blue'
 only_with_files = true
 
 [kubernetes]
-symbol = '☸ '
+symbol = '☸'
 format = '[$symbol$context( \($namespace\))]($style) '
 style = 'bold blue'
-disabled = false
+disabled = true
 
 [terraform]
-symbol = '💠 '
+symbol = '💠'
 format = '[$symbol$workspace]($style) '
 style = 'bold purple'
+disabled = true
 
 [aws]
 symbol = ' '
-format = '[$symbol($profile )(\($region\) )(\[$duration\] )]($style)'
+format = '[$symbol($profile )(\($region\))]($style) '
 style = 'bold yellow'
-
-[gcloud]
-symbol = '☁️  '
-format = '[$symbol$account(@$domain)(\($region\))]($style) '
-style = 'bold blue'
-
-[azure]
-symbol = '☁️  '
-format = '[$symbol($subscription)]($style) '
-style = 'bold blue'
-
-# ============================================================================
-# Version Control (Other)
-# ============================================================================
-
-[hg_branch]
-symbol = ' '
-format = '[$symbol$branch]($style) '
-style = 'bold purple'
-
-# ============================================================================
-# Tools
-# ============================================================================
-
-[cmake]
-symbol = '△ '
-format = '[$symbol($version )]($style)'
-style = 'bold blue'
-
-[dart]
-symbol = ' '
-format = '[$symbol($version )]($style)'
-style = 'bold blue'
-
-[helm]
-symbol = '⎈ '
-format = '[$symbol($version )]($style)'
-style = 'bold white'
-
-[vagrant]
-symbol = '⍱ '
-format = '[$symbol($version )]($style)'
-style = 'bold cyan'
-
-# ============================================================================
-# Environment Variables
-# ============================================================================
-
-[env_var.SHELL]
-variable = 'SHELL'
-default = 'unknown shell'
-format = '[$env_value]($style) '
-style = 'dimmed white'
 disabled = true
 
 # ============================================================================
-# Battery
-# ============================================================================
-
-[battery]
-full_symbol = ' '
-charging_symbol = ' '
-discharging_symbol = ' '
-unknown_symbol = ' '
-empty_symbol = ' '
-disabled = false
-
-[[battery.display]]
-threshold = 10
-style = 'bold red'
-
-[[battery.display]]
-threshold = 30
-style = 'bold yellow'
-
-[[battery.display]]
-threshold = 100
-style = 'bold green'
-
-# ============================================================================
-# Memory Usage
-# ============================================================================
-
-[memory_usage]
-disabled = true
-threshold = 75
-format = 'via $symbol[$ram( | $swap)]($style) '
-symbol = ' '
-style = 'bold dimmed white'
-
-# ============================================================================
-# Jobs
+# Tools - Minimal configuration
 # ============================================================================
 
 [jobs]
@@ -341,14 +211,10 @@ number_threshold = 1
 format = '[$symbol$number]($style) '
 style = 'bold blue'
 
-# ============================================================================
-# Status
-# ============================================================================
-
 [status]
 disabled = false
 format = '[\[$symbol$status\]]($style) '
-symbol = '✖ '
+symbol = '✖'
 style = 'bold red'
 
 # ============================================================================

@@ -18,8 +18,6 @@ alias nt='npm test'
 alias nb='npm run build'
 alias nrd='npm run dev'
 alias nc='npm run clean'
-# Use 'npxni' for npx with --no-install, regular 'npx' works normally
-alias npxni='npx --no-install'
 
 # Yarn
 alias y='yarn'
@@ -249,8 +247,6 @@ alias gwtr='git worktree remove'
 alias drun='docker run -it --rm'
 alias dst='docker stop'
 alias drm='docker rm'
-# Use 'docker container prune' for safe cleanup instead of drma
-alias drmall='docker container prune -f'  # Remove all stopped containers
 alias dstart='docker start'
 
 # Image management
@@ -260,11 +256,11 @@ alias dpush='docker push'
 alias dbuild='docker build'
 alias dtag='docker tag'
 
-# System
+# System cleanup
 alias dsys='docker system df'
-alias dprune='docker system prune -af'
-alias dvprune='docker volume prune -f'
-alias dnprune='docker network prune -f'
+alias dprune='docker system prune -a'
+alias dvprune='docker volume prune'
+alias dnprune='docker network prune'
 
 # Docker Compose
 alias dcup='docker compose up'

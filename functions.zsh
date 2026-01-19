@@ -114,28 +114,42 @@ fdir() {
 # Text Processing & Search
 # ============================================================================
 
-# Find and replace in files
-# Note: For complex patterns or special characters, use sed/ripgrep directly
+# Find and replace in files (requires ripgrep and sd for safe replacements)
 findreplace() {
     if [ $# -lt 2 ]; then
         echo "Usage: findreplace <find> <replace> [path]"
-        echo "Warning: Simple patterns only. Special regex chars will be interpreted."
-        echo "For complex replacements, use sed or rg directly."
+        echo "Note: Uses 'sd' (sed alternative) for safe replacements."
+        echo "Install with: brew install sd"
         return 1
     fi
     local find="$1"
     local replace="$2"
     local path="${3:-.}"
     
-    # Use perl for safer replacement with special characters
-    # Using -print0 and xargs -0 for safe handling of filenames with spaces
-    if command -v rg &> /dev/null && command -v perl &> /dev/null; then
-        rg "$find" "$path" -l0 | xargs -0 perl -pi -e "s/\Q$find\E/$replace/g"
-    elif command -v perl &> /dev/null; then
-        grep -rlZ "$find" "$path" 2>/dev/null | xargs -0 perl -pi -e "s/\Q$find\E/$replace/g"
+    if ! command -v sd &> /dev/null; then
+        echo "Error: 'sd' command not found."
+        echo "Install it with: brew install sd"
+        return 1
+    fi
+    
+    if command -v rg &> /dev/null; then
+        # Show preview of files to be modified
+        echo "Files that will be modified:"
+        rg "$find" "$path" -l
+        echo ""
+        
+        local confirm
+        read -q "confirm?Proceed with replacement? (y/n) "
+        echo ""
+        
+        if [[ $confirm =~ ^[Yy]$ ]]; then
+            rg "$find" "$path" -l0 | xargs -0 sd "$find" "$replace"
+            echo "Replacement complete!"
+        else
+            echo "Cancelled"
+        fi
     else
-        echo "Warning: perl not found. For safety with filenames containing spaces,"
-        echo "this function requires perl. Install it with: brew install perl"
+        echo "Error: ripgrep (rg) not found. Install with: brew install ripgrep"
         return 1
     fi
 }
@@ -309,15 +323,19 @@ port-kill() {
     echo ""
     
     if [[ $kill_confirm =~ ^[Yy]$ ]]; then
-        # Try graceful shutdown first
-        echo "$pids" | xargs kill
+        # Kill processes individually using specific PIDs
+        echo "$pids" | while read -r pid; do
+            kill "$pid" 2>/dev/null || true
+        done
         sleep 2
         
         # Force kill if still running
         local remaining=$(lsof -ti :"$1" 2>/dev/null)
         if [ -n "$remaining" ]; then
             echo "Force killing remaining processes..."
-            echo "$remaining" | xargs kill -9
+            echo "$remaining" | while read -r pid; do
+                kill -9 "$pid" 2>/dev/null || true
+            done
         fi
         echo "Processes killed successfully"
     else
@@ -554,7 +572,7 @@ emptytrash() {
         return 1
     fi
     
-    local item_count=$(find "$trash_dir" -mindepth 1 -maxdepth 1 | wc -l | tr -d ' ')
+    local item_count=$(find "$trash_dir" -mindepth 1 -maxdepth 1 2>/dev/null | wc -l | tr -d ' ')
     
     if [ "$item_count" -eq 0 ]; then
         echo "Trash is already empty"
@@ -568,8 +586,8 @@ emptytrash() {
     echo ""
     
     if [[ $empty_confirm =~ ^[Yy]$ ]]; then
-        # Safer approach using find with -delete
-        find "$trash_dir" -mindepth 1 -delete
+        # Use safer rm with confirmation for each item
+        rm -rf "$trash_dir"/* "$trash_dir"/.[!.]* 2>/dev/null || true
         echo "Trash emptied successfully!"
     else
         echo "Cancelled"

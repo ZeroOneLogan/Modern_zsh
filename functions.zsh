@@ -142,7 +142,7 @@ findreplace() {
         read -q "confirm?Proceed with replacement? (y/n) "
         echo ""
         
-        if [[ $confirm =~ ^[Yy]$ ]]; then
+        if [[ $confirm == "y" ]]; then
             rg "$find" "$path" -l0 | xargs -0 sd "$find" "$replace"
             echo "Replacement complete!"
         else
@@ -322,7 +322,7 @@ port-kill() {
     read -q "kill_confirm?Kill these processes? (y/n) "
     echo ""
     
-    if [[ $kill_confirm =~ ^[Yy]$ ]]; then
+    if [[ $kill_confirm == "y" ]]; then
         # Kill processes individually using specific PIDs
         echo "$pids" | while read -r pid; do
             kill "$pid" 2>/dev/null || true
@@ -585,9 +585,14 @@ emptytrash() {
     read -q "empty_confirm?Empty trash? (y/n) "
     echo ""
     
-    if [[ $empty_confirm =~ ^[Yy]$ ]]; then
-        # Use safer rm with confirmation for each item
-        rm -rf "$trash_dir"/* "$trash_dir"/.[!.]* 2>/dev/null || true
+    if [[ $empty_confirm == "y" ]]; then
+        # Validate trash_dir before deletion
+        if [[ -z "$trash_dir" ]] || [[ "$trash_dir" == "/" ]]; then
+            echo "Error: Invalid trash directory"
+            return 1
+        fi
+        # Use find for safer deletion
+        find "$trash_dir" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
         echo "Trash emptied successfully!"
     else
         echo "Cancelled"

@@ -112,10 +112,6 @@ staged = '+'
 renamed = '»'
 deleted = '✘'
 
-[git_state]
-format = '[\($state( $progress_current/$progress_total)\)]($style) '
-style = 'bright-black'
-
 [git_commit]
 commit_hash_length = 7
 tag_symbol = '🏷'
